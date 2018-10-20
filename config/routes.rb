@@ -3,11 +3,7 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
-scope :api do
-
-	 post "/", to: "api#event", as: "api_event"
-
+  scope :api do
+    get "/events/:id", to: "api#event", as: "api_event"
 end
-
-
 end
