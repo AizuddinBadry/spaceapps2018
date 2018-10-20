@@ -1,16 +1,27 @@
-
-    <div class="pac-card" id="pac-card">
-      <div id="pac-container">
-        <input id="pac-input" type="text"
-            placeholder="Enter a location">
-      </div>
+<div class="pac-card" id="pac-card">
+    <div id="pac-container">
+        <input id="pac-input" type="text" placeholder="Enter a location">
     </div>
+    <div>
+        Latitude : <span id="lat"></span><br />
+        Longitude : <span id="lng"></span>
+    </div>
+</div>
 
-    <script>
-      function initMap() {
+<script>
+    function initMap() {
         var input = document.getElementById('pac-input');
         var autocomplete = new google.maps.places.Autocomplete(input);
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPawtq-MoY0dIzcrmGtF6pOO2oLi5qMXA&libraries=places&callback=initMap"
-        async defer></script>
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+
+            var lat = place.geometry.location.lat(),
+                lng = place.geometry.location.lng();
+
+            $('#lat').text(lat);
+            $('#lng').text(lng);
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPawtq-MoY0dIzcrmGtF6pOO2oLi5qMXA&libraries=places&callback=initMap"
+    async defer></script>
