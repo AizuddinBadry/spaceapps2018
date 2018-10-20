@@ -1,0 +1,162 @@
+<script>
+ var base_lat = ''
+    var base_lng = ''
+    function initMap() {
+        var input = document.getElementById('pac-input');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+
+            var lat = place.geometry.location.lat(),
+                lng = place.geometry.location.lng();
+
+
+            $('#get-events').click(function () {
+                $('#lat').text(lat);
+                $('#lng').text(lng);
+                base_lat = $('#lat').text()
+                base_lng = $('#lng').text()
+                var geocoder = new google.maps.Geocoder();
+                var origin = new google.maps.LatLng(lat, lng);
+                geocoder.geocode({ 'latLng': origin }, function (results, status) {
+                    if (status !== google.maps.GeocoderStatus.OK) {
+                        //console.log(status);
+                    }
+                    // This is checking to see if the Geoeode Status is OK before proceeding
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var address = (results[0].formatted_address);
+                        $("#origin_location").text(address)
+                    }
+                });
+
+                // VOLCANO
+                $.get("/api/events/12", function (data) {
+                    var timeout = 0;
+                    var count = 0
+                    $.each(data, function (index, value) {
+
+                        var url_link = value.sources[0]['url']
+                        $.each(value.geometries, function (index, value) {
+                            console.log(value);
+                            var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
+                            var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
+                            var exact_distance = parseInt(distance) / 1000
+                            timeout = timeout + 2000;
+                            console.log(exact_distance)
+                            if (exact_distance < 20) {
+                                //console.log(distance)
+                                count++;
+
+                                $("#volcano_location").append(count + '.' + url_link + '(' + exact_distance + 'km)</br>')
+
+                            }
+                            $('#volcano_count').text(count)
+                        });
+
+
+
+                    });
+
+
+                });
+
+                // EARTHQUAKE
+                $.get("/api/events/16", function (data) {
+
+                    $('#lat').text(lat);
+                    $('#lng').text(lng);
+                    base_lat = $('#lat').text()
+                    base_lng = $('#lng').text()
+                    var geocoder = new google.maps.Geocoder();
+                    var origin = new google.maps.LatLng(parseFloat(base_lat), parseFloat(base_lng));
+                    geocoder.geocode({ 'latLng': origin }, function (results, status) {
+                        if (status !== google.maps.GeocoderStatus.OK) {
+                            console.log(status);
+                        }
+                        // This is checking to see if the Geoeode Status is OK before proceeding
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            var address = (results[0].formatted_address);
+                            $("#origin_location").text(address)
+                        }
+                    });
+                    var timeout = 0;
+                    var count = 0
+                    $.each(data, function (index, value) {
+                        console.log(value)
+                        var url_link = value.sources[0]['url']
+                        $.each(value.geometries, function (index, value) {
+
+                            //console.log(value.coordinates);
+                            var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
+                            var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
+                            var exact_distance = parseInt(distance) / 1000
+                            timeout = timeout + 2000;
+                            if (exact_distance <= 20) {
+                                count++
+                                $('#earth_count').text(count)
+                                $("#earth_location").append(index + '.' + url_link + '(' + exact_distance + 'km)</br>')
+                            }
+
+                            index++
+                        });
+
+
+                    });
+
+
+                });
+
+                // FLOOD
+                $.get("/api/events/9", function (data) {
+
+                    $('#lat').text(lat);
+                    $('#lng').text(lng);
+                    base_lat = $('#lat').text()
+                    base_lng = $('#lng').text()
+                    var geocoder = new google.maps.Geocoder();
+                    var origin = new google.maps.LatLng(parseFloat(base_lat), parseFloat(base_lng));
+                    geocoder.geocode({ 'latLng': origin }, function (results, status) {
+                        if (status !== google.maps.GeocoderStatus.OK) {
+                            console.log(status);
+                        }
+                        // This is checking to see if the Geoeode Status is OK before proceeding
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            var address = (results[0].formatted_address);
+                            $("#origin_location").text(address)
+                        }
+                    });
+                    var timeout = 0;
+                    var count = 0
+                    $.each(data, function (index, value) {
+                        var url_link = value.sources[0]['url']
+                        $.each(value.geometries, function (index, value) {
+
+                            //console.log(value.coordinates);
+                            var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
+                            var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
+                            var exact_distance = parseInt(distance) / 1000
+                            timeout = timeout + 2000;
+                            if (exact_distance <= 20) {
+                                count++
+                                $('#flood_count').text(count)
+                                $("#flood_location").append(index + '.' + url_link + '(' + exact_distance + 'km)</br>')
+                            }
+
+                            index++
+
+                        });
+
+
+                    });
+
+
+                });
+            })
+            // end 
+
+
+
+        });
+    }
+
+</script>

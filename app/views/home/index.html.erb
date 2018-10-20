@@ -1,196 +1,38 @@
-
-
-
-<div class="container-fluid col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center pt-auto "style="padding-top: 20%;" >
-  <div class="input-group pt-5">
-       <input type="text" id="pac-input" class="search-input form-control text-center" placeholder="Your Address..." onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Address...'" style="padding-top: 30px; padding-bottom: 30px;">
-    </input>
-    <span class="input-group-btn">
-    <button class="search-btn btn btn-warning "  id='get-events' style="padding-top: 18px; padding-bottom: 18px; padding-right: 30px; text-align: center;"><span style="margin-left: 20px"><b>Search</b></span>
-      </button>
-      </span>
+<div class="container-fluid col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center pt-auto "
+    style="padding-top: 20%;">
+    <div class="input-group pt-5">
+        <input type="text" id="pac-input" class="search-input form-control text-center" placeholder="Your Address..."
+            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Address...'" style="padding-top: 30px; padding-bottom: 30px;">
+        </input>
+        <span class="input-group-btn">
+            <button class="search-btn btn btn-warning " id='get-events' style="padding-top: 18px; padding-bottom: 18px; padding-right: 30px; text-align: center;"><span
+                    style="margin-left: 20px"><b>Search</b></span>
+            </button>
+        </span>
     </div>
-  </div>
+</div>
 
-    <div>
-        Latitude : <span id="lat"></span><br />
-        Longitude : <span id="lng"></span><br />
-        Status :<br />
-        Origin : <span id='origin_location'></span><br />
-        Near Events Occur : <br />
-        <h5>VOLCANO (<span id="volcano_count"></span>)</h5>
-        <span id='volcano_location'></span>
-        <h5>EARTHQUAKE (<span id="earth_count"></span>)</h5>
-        <span id='earth_location'></span>
-        <h5>FLOOD (<span id="flood_count"></span>)</h5>
-        <span id='flood_location'></span>
-    </div>
-    <div>
-        <div id="output"></div>
-    </div>
-
-
-<script>
-    var base_lat = ''
-    var base_lng = ''
-    function initMap() {
-        var input = document.getElementById('pac-input');
-        var autocomplete = new google.maps.places.Autocomplete(input);
-        autocomplete.addListener('place_changed', function () {
-            var place = autocomplete.getPlace();
-
-            var lat = place.geometry.location.lat(),
-                lng = place.geometry.location.lng();
-
-
-            $('#get-events').click(function () {
-                $('#lat').text(lat);
-                $('#lng').text(lng);
-                base_lat = $('#lat').text()
-                base_lng = $('#lng').text()
-                var geocoder = new google.maps.Geocoder();
-                var origin = new google.maps.LatLng(lat, lng);
-                geocoder.geocode({ 'latLng': origin }, function (results, status) {
-                    if (status !== google.maps.GeocoderStatus.OK) {
-                        //console.log(status);
-                    }
-                    // This is checking to see if the Geoeode Status is OK before proceeding
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        var address = (results[0].formatted_address);
-                        $("#origin_location").text(address)
-                    }
-                });
-
-                // VOLCANO
-                $.get("/api/events/12", function (data) {
-                    var timeout = 0;
-                    var count = 0
-                    $.each(data, function (index, value) {
-
-                        var url_link = value.sources[0]['url']
-                        $.each(value.geometries, function (index, value) {
-                            console.log(value);
-                            var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
-                            var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
-                            var exact_distance = parseInt(distance) / 1000
-                            timeout = timeout + 2000;
-                            console.log(exact_distance)
-                            if (exact_distance < 20) {
-                                //console.log(distance)
-                                count++;
-
-                                $("#volcano_location").append(count + '.' + url_link + '(' + exact_distance + 'km)</br>')
-
-                            }
-                            $('#volcano_count').text(count)
-                        });
+<div>
+    Latitude : <span id="lat"></span><br />
+    Longitude : <span id="lng"></span><br />
+    Status :<br />
+    Origin : <span id='origin_location'></span><br />
+    Near Events Occur : <br />
+    <h5>VOLCANO (<span id="volcano_count"></span>)</h5>
+    <span id='volcano_location'></span>
+    <h5>EARTHQUAKE (<span id="earth_count"></span>)</h5>
+    <span id='earth_location'></span>
+    <h5>FLOOD (<span id="flood_count"></span>)</h5>
+    <span id='flood_location'></span>
+</div>
+<div>
+    <div id="output"></div>
+</div>
 
 
 
-                    });
+<%= render 'home/shared/geolocation.js'%>
 
 
-                });
-
-                // EARTHQUAKE
-                $.get("/api/events/16", function (data) {
-
-                    $('#lat').text(lat);
-                    $('#lng').text(lng);
-                    base_lat = $('#lat').text()
-                    base_lng = $('#lng').text()
-                    var geocoder = new google.maps.Geocoder();
-                    var origin = new google.maps.LatLng(parseFloat(base_lat), parseFloat(base_lng));
-                    geocoder.geocode({ 'latLng': origin }, function (results, status) {
-                        if (status !== google.maps.GeocoderStatus.OK) {
-                            console.log(status);
-                        }
-                        // This is checking to see if the Geoeode Status is OK before proceeding
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            var address = (results[0].formatted_address);
-                            $("#origin_location").text(address)
-                        }
-                    });
-                    var timeout = 0;
-                    var count = 0
-                    $.each(data, function (index, value) {
-                        console.log(value)
-                        var url_link = value.sources[0]['url']
-                        $.each(value.geometries, function (index, value) {
-
-                            //console.log(value.coordinates);
-                            var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
-                            var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
-                            var exact_distance = parseInt(distance) / 1000
-                            timeout = timeout + 2000;
-                            if (exact_distance <= 20) {
-                                count++
-                                $('#earth_count').text(count)
-                                $("#earth_location").append(index + '.' + url_link + '(' + exact_distance + 'km)</br>')
-                            }
-
-                            index++
-                        });
-
-
-                    });
-
-
-                });
-
-                // FLOOD
-                $.get("/api/events/9", function (data) {
-
-                    $('#lat').text(lat);
-                    $('#lng').text(lng);
-                    base_lat = $('#lat').text()
-                    base_lng = $('#lng').text()
-                    var geocoder = new google.maps.Geocoder();
-                    var origin = new google.maps.LatLng(parseFloat(base_lat), parseFloat(base_lng));
-                    geocoder.geocode({ 'latLng': origin }, function (results, status) {
-                        if (status !== google.maps.GeocoderStatus.OK) {
-                            console.log(status);
-                        }
-                        // This is checking to see if the Geoeode Status is OK before proceeding
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            var address = (results[0].formatted_address);
-                            $("#origin_location").text(address)
-                        }
-                    });
-                    var timeout = 0;
-                    var count = 0
-                    $.each(data, function (index, value) {
-                        var url_link = value.sources[0]['url']
-                        $.each(value.geometries, function (index, value) {
-
-                            //console.log(value.coordinates);
-                            var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
-                            var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
-                            var exact_distance = parseInt(distance) / 1000
-                            timeout = timeout + 2000;
-                            if (exact_distance <= 20) {
-                                count++
-                                $('#flood_count').text(count)
-                                $("#flood_location").append(index + '.' + url_link + '(' + exact_distance + 'km)</br>')
-                            }
-
-                            index++
-
-                        });
-
-
-                    });
-
-
-                });
-            })
-            // end 
-
-
-
-        });
-    }
-
-</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPawtq-MoY0dIzcrmGtF6pOO2oLi5qMXA&libraries=places,geometry&callback=initMap"
     async defer></script>
