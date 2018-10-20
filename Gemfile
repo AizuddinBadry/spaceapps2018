@@ -60,6 +60,7 @@ end
 
 group :development, :production do
   gem "httparty", require: "httparty"
+  gem "jquery-rails"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

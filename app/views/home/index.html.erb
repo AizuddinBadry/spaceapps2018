@@ -1,0 +1,16 @@
+
+    <div class="pac-card" id="pac-card">
+      <div id="pac-container">
+        <input id="pac-input" type="text"
+            placeholder="Enter a location">
+      </div>
+    </div>
+
+    <script>
+      function initMap() {
+        var input = document.getElementById('pac-input');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPawtq-MoY0dIzcrmGtF6pOO2oLi5qMXA&libraries=places&callback=initMap"
+        async defer></script>
