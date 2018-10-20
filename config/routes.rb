@@ -3,17 +3,14 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
-scope :api do
 
-	 post "/", to: "api#event", as: "api_event"
-	
-end
 
 scope :home do
 
 	 get "/index2", to: "home#index2", as: "home_index2"
 
 end
-
-
+  scope :api do
+    get "/events/:id", to: "api#event", as: "api_event"
+end
 end
