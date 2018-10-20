@@ -1,6 +1,6 @@
 namespace :disaster do
   task :all => :environment do
-    response = HTTParty.get("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson")
+    response = HTTParty.get("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson")
     response["features"].each do |val|
       @disaster = Disaster.find_by_ids(val["properties"]["ids"])
       if !@disaster.present?

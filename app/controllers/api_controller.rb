@@ -14,7 +14,7 @@ class ApiController < ApplicationController
     @count = 0
     @disaster.each do |d|
       @distance = Geocoder::Calculations.distance_between([d.lat, d.lng], [params[:lat], params[:lng]], units: :km)
-      if @distance < 200
+      if (@distance / 100) < 40
         @count = @count + 1
       end
     end
