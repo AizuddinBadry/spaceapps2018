@@ -10,4 +10,12 @@ namespace :disaster do
       end
     end
   end
+
+  task :test => :environment do
+    @disaster = Disaster.all
+    @disaster.each do |d|
+       @distance = Geocoder::Calculations.distance_between([51.7651, 19.45687], [d.lat, d.lng], units: :km)
+       puts @distance
+    end
+  end
 end

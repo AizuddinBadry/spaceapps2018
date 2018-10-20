@@ -1,5 +1,5 @@
 <script>
- var base_lat = ''
+    var base_lat = ''
     var base_lng = ''
     function initMap() {
         var input = document.getElementById('pac-input');
@@ -37,12 +37,12 @@
 
                         var url_link = value.sources[0]['url']
                         $.each(value.geometries, function (index, value) {
-                            console.log(value);
+                            //console.log(value);
                             var destination = new google.maps.LatLng(value.coordinates[0], value.coordinates[1]);
                             var distance = google.maps.geometry.spherical.computeDistanceBetween(origin, destination)
                             var exact_distance = parseInt(distance) / 1000
                             timeout = timeout + 2000;
-                            console.log(exact_distance)
+                            //console.log(exact_distance)
                             if (exact_distance < 20) {
                                 //console.log(distance)
                                 count++;
@@ -50,12 +50,15 @@
                                 $("#volcano_location").append(count + '.' + url_link + '(' + exact_distance + 'km)</br>')
 
                             }
+
+                        });
+                    });
+                    $.post("/api/crisis", { types: "volcano", lat: lat, lng: lng })
+                        .done(function (data) {
+                            //console.log(data);
+                            count = count + data.count
                             $('#volcano_count').text(count)
                         });
-
-
-
-                    });
 
 
                 });
@@ -71,7 +74,7 @@
                     var origin = new google.maps.LatLng(parseFloat(base_lat), parseFloat(base_lng));
                     geocoder.geocode({ 'latLng': origin }, function (results, status) {
                         if (status !== google.maps.GeocoderStatus.OK) {
-                            console.log(status);
+                            //console.log(status);
                         }
                         // This is checking to see if the Geoeode Status is OK before proceeding
                         if (status == google.maps.GeocoderStatus.OK) {
@@ -82,7 +85,7 @@
                     var timeout = 0;
                     var count = 0
                     $.each(data, function (index, value) {
-                        console.log(value)
+                        //console.log(value)
                         var url_link = value.sources[0]['url']
                         $.each(value.geometries, function (index, value) {
 
@@ -93,15 +96,20 @@
                             timeout = timeout + 2000;
                             if (exact_distance <= 20) {
                                 count++
-                                $('#earth_count').text(count)
+
                                 $("#earth_location").append(index + '.' + url_link + '(' + exact_distance + 'km)</br>')
                             }
 
                             index++
                         });
 
-
                     });
+                    $.post("/api/crisis", { types: "earthquake", lat: lat, lng: lng })
+                        .done(function (data) {
+                            //console.log(data);
+                            count = count + data.count
+                            $('#earth_count').text(count)
+                        });
 
 
                 });
@@ -117,7 +125,7 @@
                     var origin = new google.maps.LatLng(parseFloat(base_lat), parseFloat(base_lng));
                     geocoder.geocode({ 'latLng': origin }, function (results, status) {
                         if (status !== google.maps.GeocoderStatus.OK) {
-                            console.log(status);
+                            //console.log(status);
                         }
                         // This is checking to see if the Geoeode Status is OK before proceeding
                         if (status == google.maps.GeocoderStatus.OK) {
@@ -138,7 +146,7 @@
                             timeout = timeout + 2000;
                             if (exact_distance <= 20) {
                                 count++
-                                $('#flood_count').text(count)
+
                                 $("#flood_location").append(index + '.' + url_link + '(' + exact_distance + 'km)</br>')
                             }
 
@@ -148,6 +156,12 @@
 
 
                     });
+                    $.post("/api/crisis", { types: "flood", lat: lat, lng: lng })
+                        .done(function (data) {
+                            //console.log(data);
+                            count = count + data.count
+                            $('#flood_count').text(count)
+                        });
 
 
                 });
