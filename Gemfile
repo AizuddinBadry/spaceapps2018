@@ -24,7 +24,7 @@ gem "turbolinks", "~> 5"
 gem "jbuilder", "~> 2.5"
 
 gem "bootstrap"
-gem 'jquery-rails'
+gem "jquery-rails"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -64,7 +64,8 @@ end
 group :development, :production do
   gem "httparty", require: "httparty"
   gem "jquery-rails"
-  gem 'whenever', require: false
+  gem "whenever", require: false
+  gem "geocoder", require: true
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
