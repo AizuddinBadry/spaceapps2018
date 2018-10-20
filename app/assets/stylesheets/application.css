@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+.well {
+  margin-top: 5%;
+  margin-right: 15%;
+  margin-left: 15%;
+  border: 0px solid #428BCA;
+  border-radius: 0%;
+}
+
