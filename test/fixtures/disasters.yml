@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  place: MyText
+  time: 2018-10-21 02:45:59
+  alert: MyText
+  tsunami: 
+  mag: 
+  type: MyText
+  title: MyText
+  lat: 1.5
+  lng: 1.5
+
+two:
+  place: MyText
+  time: 2018-10-21 02:45:59
+  alert: MyText
+  tsunami: 
+  mag: 
+  type: MyText
+  title: MyText
+  lat: 1.5
+  lng: 1.5
