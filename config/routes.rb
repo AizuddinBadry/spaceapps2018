@@ -6,6 +6,12 @@ Rails.application.routes.draw do
 scope :api do
 
 	 post "/", to: "api#event", as: "api_event"
+	
+end
+
+scope :home do
+
+	 get "/index2", to: "home#index2", as: "home_index2"
 
 end
 
