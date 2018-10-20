@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2018_10_20_185207) do
     t.text "alert"
     t.bigint "tsunami"
     t.float "mag"
-    t.text "type"
+    t.text "types"
     t.text "title"
     t.float "lat"
     t.float "lng"

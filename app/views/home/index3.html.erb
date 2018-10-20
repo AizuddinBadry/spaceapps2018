@@ -1,0 +1,95 @@
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class=" navbar-header navbar-default">
+      <div class="mycontainer">
+        <a class="mybtn2 btn btn-link btn-xs" href="/home"><i class="fa fa-arrow-circle-o-left" style="font-size:2.5rem;"></i></a>
+        <div class="navbar-brand">Back</div>
+    </div>
+  </div>           
+</nav>
+
+    <div class="well text-weight-bold text-center">
+      <div class="row">
+         <div class="col-12 pb-5">
+          <%= image_tag("https://via.placeholder.com/1050x450") %>
+        </div>
+        <div class="col-12 pt-5 pb-5">
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Cause')" id="defaultOpen">Cause</button>
+  <button class="tablinks" onclick="openCity(event, 'Impact')">Impact</button>
+  <button class="tablinks" onclick="openCity(event, 'Prepare')">Prepare</button>
+  <button class="tablinks" onclick="openCity(event, 'Evacuate')">Evacuate</button>
+</div>
+
+<div id="Cause" class="tabcontent">
+ <div class="row">
+   <div class="col-12 pt-3">
+    <h3>Cause</h3>
+   </div>
+ </div>
+</div>
+
+<div id="Impact" class="tabcontent">
+ <div class="row">
+   <div class="col-12 pt-3">
+    <h3>Impact</h3>
+   </div>
+ </div>
+</div>
+
+<div id="Prepare" class="tabcontent">
+  <div class="row">
+   <div class="col-12 pt-3">
+    <h3>Prepare</h3>
+   </div>
+ </div>
+</div>
+
+<div id="Evacuate" class="tabcontent">
+ <div class="row">
+   <div class="col-4 p-4">
+    <button class="btn btn-sm btn-default btn-block mt-2"><%= image_tag("current.png", height: '45', width: '45') %> Your Location
+            
+          </button>
+   </div>
+    <div class="col-4 p-4">
+    <button class="btn btn-sm btn-default btn-block mt-2"><%= image_tag("safe.png", height: '45', width: '45') %> Safe Building
+            
+          </button>
+   </div>
+    <div class="col-4 p-4">
+    <button class="btn btn-sm btn-default btn-block mt-2"><%= image_tag("shelter.png", height: '45', width: '45') %> Shelter
+             
+          </button>
+   </div>
+   <div class="col-12 pt-4 pb-4">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15935.209565589497!2d101.68978922676553!3d3.1467845133387033!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc49d3e30988d7%3A0x464a4b7fda23c09a!2sKuala+Lumpur+City+Centre%2C+Kuala+Lumpur%2C+Federal+Territory+of+Kuala+Lumpur!5e0!3m2!1sen!2smy!4v1540053804761" width="700" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+   </div>
+ </div>
+</div>
+
+     
+        </div>
+      </div>
+      
+    </div>
+
+
+<script>
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
